@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Mapeamento Territorial - Documentação</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="../../../public/css/style.css">
+    <style>
+
+        :root {
+            --primary-color: #2c3e50;    /* Azul escuro - cor principal */
+            --secondary-color: #3498db;  /* Azul médio - para destaques */
+            --accent-color: #e74c3c;     /* Vermelho - para elementos de ação */
+            --light-bg: #f8f9fa;        /* Fundo claro */
+            --dark-bg: #2c3e50;         /* Mesmo do header para o footer */
+            --text-light: rgba(255,255,255,0.85); /* Texto claro */
+        }
+
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: #333;
+        }
+        
+        /* Header Estilizado */
+        .navbar {
+            background-color: var(--primary-color) !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: white !important;
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-brand img {
+            margin-right: 10px;
+        }
+        
+        .nav-link {
+            color: rgba(255,255,255,0.85) !important;
+            font-weight: 500;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: white !important;
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 5rem 0;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('moz-pattern.png');
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-title {
+            font-weight: 800;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        
+        
+    
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 3rem 0;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+        }
+
+        .legal-definition {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .legal-reference {
+            font-size: 0.9rem;
+            color: #6c757d;
+            font-style: italic;
+        }
+        .concept-card {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: white;
+        }
+        .concept-title {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header/Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="../../../public/images/Logo.png" alt="Logo" width="" height="" >
+                API Territorial
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+             <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/api-docs">Documentação</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container text-center">
+            <h1 class="hero-title display-4 fw-bold mb-4">Documentação da API</h1>
+            <p class="lead">Definições técnicas e base legal da divisão territorial de Moçambique</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Seção de Definições Conceituais -->
+        <section id="definicoes" class="mb-5">
+            <h2 class="text-center mb-4">Definições e Conceitos Territoriais</h2>
+            
+            <div class="alert alert-primary">
+                <i class="bi bi-info-circle-fill"></i> Todas as definições territoriais seguem a Constituição da República de Moçambique e o Boletim da República.
+            </div>
+
+            <div class="row">
+                <!-- Conceitos Globais -->
+                <div class="col-md-6">
+                    <div class="concept-card">
+                        <h3 class="concept-title">Conceitos Globais</h3>
+                        
+                        <div class="mb-4">
+                            <h5>País</h5>
+                            <div class="legal-definition">
+                                <p>Unidade territorial soberana, politicamente organizada, com governo próprio e reconhecida internacionalmente.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5>Continente</h5>
+                            <div class="legal-definition">
+                                <p>Grande massa de terra que agrupa vários países com características geográficas e culturais semelhantes.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5>Capital</h5>
+                            <div class="legal-definition">
+                                <p>Cidade onde se localiza a sede do governo de um país, estado ou província.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Conceitos de Moçambique -->
+                <div class="col-md-6">
+                    <div class="concept-card">
+                        <h3 class="concept-title">Divisão Territorial de Moçambique</h3>
+                        
+                        <div class="mb-4">
+                            <h5>Província</h5>
+                            <div class="legal-definition">
+                                <ol type="1">
+                                    <li>A província é a maior unidade territorial da organização política, económica e social da administração local do Estado,</li>
+                                    <li>A província é constituída por distritos, postos administrativos, localidades e povoações.</li>
+                                    <li>A província abrange também as áreas das autarquias locais compreendidas no respectivo território.</li>
+
+                                </ol>
+
+                                <div class="legal-reference">
+                                    <strong>Referência Legal:</strong> Constituição da República, Artigo 9º (Boletim da República, Decreto Nº. 11/2005)
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5>Distrito</h5>
+                            <div class="legal-definition">
+                                <ol type="1">
+                                    <li>O distrito é a unidade territorial principal da organização e funcionamento da administração local do Estado e
+                                        base da planificação do desenvolvimento económico, social
+                                        e cultural da República de Moçambique.</li>
+                                    <li>O distrito é composto por postos administrativos, localidades e povoações,</li>
+                                    <li>O distrito abrange também as áreas das autarquias locais compreendidas no respectivo território.</li>
+                                </ol>
+
+                                <div class="legal-reference">
+                                    <strong>Referência Legal:</strong> Constituição da República, Artigo 10º (Boletim da República, Decreto Nº. 11/2005)
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5>Posto Administrativo</h5>
+                            <div class="legal-definition">
+                                <ol type="1">
+                                    <li>O posto administrativo é a unidade territorial imediatamente inferior ao distrito, tendo em vista garantir a
+                                        aproximação efectiva dos serviços da administração local do
+                                        Estado às populações e assegurar maior participação dos
+                                        cidadãos na realização dos interesses locais.</li>
+                                    <li>O posto administrativo é constituído por localidades e povoações.</li>
+                                    <li>O posto administrativo abrange também as áreas das autarquias locais compreendidas no respectivo território.</li>
+                                </ol>
+
+                                <div class="legal-reference">
+                                    <strong>Referência Legal:</strong> Constituição da República, Artigo 11º (Boletim da República, Decreto Nº. 11/2005)
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5>Divisão Regional</h5>
+                            <div class="legal-definition">
+                                <p>Moçambique está dividido em três regiões geográficas: Norte, Centro e Sul, conforme estabelecido para fins de planeamento e desenvolvimento territorial.</p>
+                                <!-- <div class="legal-reference">
+                                    <strong>Referência Legal:</strong> 
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Disposições Constitucionais -->
+            <div class="concept-card mt-4">
+                <h3 class="concept-title">Base Legal da Divisão Territorial</h3>
+                
+                <div class="legal-definition">
+                    <ol type="1">
+                        <li>A República de Moçambique é um Estado unitário</li>
+                        <li>O Estado orienta-se pelos princípios a descentralização e de subsidiariedade.</li>
+                        <li>O Estado respeita na sua organização e funcionamento, a autonomia dos 
+                            orgãos de governação provincial, distrital e das autarquias locais.</li>
+                    </ol>
+                </div>
+                
+                <div class="legal-reference mt-3">
+                    <strong>Fonte Completa:</strong> Boletim da República, Artigo Nº. 8 da Lei Nº. 1/2018
+                </div>
+            </div>
+        </section>
+
+        <!-- Mapa Interativo e Documentação da API mantidos como antes -->
+        
+        <!-- Nova Seção de Fontes Oficiais -->
+        <section id="fontes" class="mb-5">
+            <div class="concept-card">
+                <h3 class="concept-title">Fontes Oficiais dos Dados</h3>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-4">
+                            <h5>Dados Territoriais</h5>
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <i class="bi bi-file-text-fill me-2"></i>
+                                    Constituição da República de Moçambique
+                                </li>
+                                <li class="list-group-item">
+                                    <i class="bi bi-file-text-fill me-2"></i>
+                                    Boletim da República - Lei de Organização Territorial
+                                </li>
+                                <li class="list-group-item">
+                                    <i class="bi bi-file-text-fill me-2"></i>
+                                    Decreto Nº 11/2005 
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-4">
+                            <h5>Dados Geográficos</h5>
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <i class="bi bi-globe me-2"></i>
+                                    GADM
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-warning mt-3">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    <strong>Nota:</strong> Esta API utiliza dados oficiais publicados pelo Governo de Moçambique e dados fornecidos pela GADM maps and data.
+                </div>
+            </div>
+        </section>
+    </div>
+
+        <!-- Footer -->
+   <footer>
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-4 mb-4">
+                  <a href="/" class="footer-brand d-flex align-items-center">
+                      API Territorial
+                  </a>
+                  <p class="mt-2">Sistema oficial de consulta da divisão administrativa de Moçambique.</p>
+                  <div class="social-icons mt-3">
+                      <a href="#"><i class="bi bi-github"></i></a>
+                      <a href="#"><i class="bi bi-linkedin"></i></a>
+                      <a href="#"><i class="bi bi-twitter"></i></a>
+                      <a href="#"><i class="bi bi-envelope-fill"></i></a>
+                  </div>
+              </div>
+              <div class="col-lg-2 col-md-4 mb-4">
+                  <h5>Navegação</h5>
+                  <ul class="nav flex-column footer-links mt-3">
+                      <li class="nav-item mb-2"><a href="/" class="nav-link p-0">Home</a></li>
+                      <li class="nav-item mb-2"><a href="/api-docs" class="nav-link p-0">Documentação</a></li>
+                  </ul>
+              </div>
+              <div class="col-lg-3 col-md-4 mb-4">
+                  <h5>Fontes Oficiais</h5>
+                  <ul class="nav flex-column footer-links mt-3">
+                      <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Constituição da República</a></li>
+                      <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Boletim da República</a></li>
+                      <li class="nav-item mb-2"><a href="https://gadm.org" class="nav-link p-0">GADM</a></li>
+                      <li class="nav-item mb-2"><a href="www.cmmaputo.gov.mz?page_id=125" class="nav-link p-0">CMMAPUTO</a></li>
+                  </ul>
+              </div>
+              <div class="col-lg-3 col-md-4 mb-4">
+                  <h5>Contacto</h5>
+                  <ul class="nav flex-column mt-3">
+                      <li class="nav-item mb-2 d-flex align-items-center">
+                          <i class="bi bi-geo-alt-fill me-2"></i>
+                          Cabo Delgado, Pemba, Moçambique
+                      </li>
+                      <li class="nav-item mb-2 d-flex align-items-center">
+                          <i class="bi bi-envelope-fill me-2"></i>
+                          eugeniosergio72@gmail.com
+                      </li>
+                      <li class="nav-item mb-2 d-flex align-items-center">
+                          <i class="bi bi-telephone-fill me-2"></i>
+                          +258 87 420 3791
+                      </li>
+                  </ul>
+              </div>
+          </div>
+          <div class="footer-divider"></div>
+          <div class="row">
+              <div class="col-md-6 text-center text-md-start  d-flex">
+                  <p class="mb-0"> &copy; <div id="anoActual" class="anoActual"> 2023 </div> API Mapeamento Territorial. Todos direitos reservados.</p>
+              </div>
+              <div class="col-md-6 text-center text-md-end">
+                  <p class="mb-0">Desenvolvido por <a href="#" class="text-white">Eugénio</a></p>
+              </div>
+          </div>
+      </div>
+  </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const dataActual = new Date();
+
+        const dataAn = document.getElementById("anoActual");
+        
+        dataAn.innerText = "  " + dataActual.getFullYear() + "   ";
+
+    </script>
+    </script>
+</body>
+</html>

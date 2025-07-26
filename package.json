@@ -1,0 +1,19 @@
+{
+  "scripts": {
+    "dev": "nodemon public/api.js",
+    "start": "node public/api.js"
+  },
+  "keywords": ["mozambique-geo-api", "geo", "api", "administrative"],
+  "author": "Eugénio Sérgio Tomás",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10"
+  },
+  "name": "Mozambique",
+  "version": "1.0.0",
+  "description": "API para dados de países e distribuição administrativa de Moçambique",
+  "main": "public/api.js",
+  "license": "MIT"
+}
